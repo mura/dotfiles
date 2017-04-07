@@ -11,23 +11,25 @@ set fileencodings=utf-8,euc-jp,sjis,iso-2022-jp
 if &compatible
   set nocompatible
 endif
-set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
+set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
 
-call dein#begin(expand('~/.vim/dein'))
+if dein#load_state(expand('~/.cache/dein'))
+  call dein#begin(expand('~/.cache/dein'))
 
-call dein#add('Shougo/dein.vim')
+  call dein#add('Shougo/dein.vim')
 
-call dein#add('Shougo/neocomplete.vim')
-call dein#add('Shougo/neomru.vim')
-call dein#add('Shougo/neosnippet')
+  call dein#add('Shougo/neocomplete.vim')
+  call dein#add('Shougo/neomru.vim')
+  call dein#add('Shougo/neosnippet')
 
-call dein#add('vim-jp/vimdoc-ja')
-call dein#add('itchyny/lightline.vim')
-call dein#add('tyru/caw.vim.git')
+  call dein#add('vim-jp/vimdoc-ja')
+  call dein#add('itchyny/lightline.vim')
+  call dein#add('tyru/caw.vim.git')
 
-call dein#end()
+  call dein#end()
+  call dein#save_state()
+endif
 
-" Required:
 filetype plugin indent on
 
 "-----------------------------------------------------------------------------
@@ -61,8 +63,8 @@ set number
 set listchars=tab:\ \
 set list
 "タブ幅を設定する
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 "入力中のコマンドをステータスに表示する
 set showcmd
 "括弧入力時の対応する括弧を表示
