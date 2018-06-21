@@ -51,7 +51,11 @@ RPROMPT="%{$fg[magenta]%}[ %~ ]%{$reset_color%}"
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias grep='grep --color=auto'
-alias ls='ls -G'
+if [ "$(uname)" = "Darwin" ]; then
+  alias ls='ls -G'
+else
+  alias ls='ls --color'
+fi
 alias ll='ls -l'
 alias l.='ls -d.*'
 #---- /Fedoraから移植 -------------------------------------#
@@ -61,12 +65,26 @@ alias mv='mv -i'
 # Wake on LAN
 alias wol_skyline='wakeonlan 1C:6F:65:84:5E:A6'
 
-fpath=(/usr/local/share/zsh-completions $fpath)
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-autoload -Uz compinit
-compinit
+# zplug
+if [ -d "/usr/local/opt/zplug" ]; then
+  export ZPLUG_HOME=/usr/local/opt/zplug
+  source $ZPLUG_HOME/init.zsh
+elif [ -d "/usr/share/zplug" ]; then
+  export ZPLUG_HOME=~/.zplug
+  source /usr/share/zplug/init.zsh
+fi
 
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if [ -d "/usr/local/share/zsh-completions" ]; then
+  fpath=(/usr/local/share/zsh-completions $fpath)
+  zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+  autoload -Uz compinit
+  compinit
+else
+  zplug 'zsh-users/zsh-completions'
+fi
 
-export ZPLUG_HOME=/usr/local/opt/zplug
-source $ZPLUG_HOME/init.zsh
+if [ -f "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
+  source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+elif [ -f "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
+  source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
