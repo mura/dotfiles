@@ -23,8 +23,11 @@ if dein#load_state(expand('~/.cache/dein'))
   call dein#add('Shougo/neosnippet')
 
   call dein#add('vim-jp/vimdoc-ja')
-  call dein#add('itchyny/lightline.vim')
+  "call dein#add('itchyny/lightline.vim')
+  call dein#add('vim-airline/vim-airline')
+  call dein#add('vim-airline/vim-airline-themes')
   call dein#add('tyru/caw.vim.git')
+  call dein#add('leafgarland/typescript-vim')
 
   call dein#end()
   call dein#save_state()
@@ -88,8 +91,11 @@ set modelines=3
 "タブをスペースに展開
 set expandtab
 
-" Chaliceの設定
-"set runtimepath+=$VIM/chalice
+" airline
+set t_Co=256
+let g:airline_theme='solarized'
+let g:airline_solarized_bg='dark'
+let g:airline_powerline_fonts = 1
 
 "-----------------------------------------------------------------------------
 "

@@ -63,7 +63,7 @@ alias rm='rm -i'
 alias mv='mv -i'
 
 # Wake on LAN
-alias wol_skyline='wakeonlan 1C:6F:65:84:5E:A6'
+alias wol_skyline='wakeonlan 38:2C:4A:5F:2C:36'
 
 # zplug
 if [ -d "/usr/local/opt/zplug" ]; then
@@ -74,6 +74,7 @@ elif [ -d "/usr/share/zplug" ]; then
   source /usr/share/zplug/init.zsh
 fi
 
+# zsh-completions
 if [ -d "/usr/local/share/zsh-completions" ]; then
   fpath=(/usr/local/share/zsh-completions $fpath)
   zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
@@ -83,8 +84,24 @@ else
   zplug 'zsh-users/zsh-completions'
 fi
 
+# zsh-syntax-highlighting
 if [ -f "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
   source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 elif [ -f "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
   source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+else
+  zplug 'zsh-users/zsh-syntax-highlighting'
+fi
+
+# zsh-history-substring-search
+if [ -f "/usr/local/share/zsh-history-substring-search/zsh-history-substring-search.zsh" ]; then
+  source /usr/local/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+else
+  zplug 'zsh-users/zsh-history-substring-search'
+fi
+
+# Google Cloud SDK
+if [ -d "/usr/local/Caskroom/google-cloud-sdk" ]; then
+  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
+  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
 fi
