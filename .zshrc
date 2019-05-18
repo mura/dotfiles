@@ -67,11 +67,17 @@ alias wol_skyline='wakeonlan 38:2C:4A:5F:2C:36'
 
 # zplug
 if [ -d "/usr/local/opt/zplug" ]; then
+  # Homebrew
   export ZPLUG_HOME=/usr/local/opt/zplug
   source $ZPLUG_HOME/init.zsh
 elif [ -d "/usr/share/zplug" ]; then
+  # Ubuntu
   export ZPLUG_HOME=~/.zplug
   source /usr/share/zplug/init.zsh
+elif [ -d "/usr/share/zsh/scripts/zplug" ]; then
+  # Arch
+  export ZPLUG_HOME=~/.zplug
+  source /usr/share/zsh/scripts/zplug/init.zsh
 fi
 
 # zsh-completions
