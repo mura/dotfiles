@@ -96,6 +96,7 @@ set t_Co=256
 let g:airline_theme='solarized'
 let g:airline_solarized_bg='dark'
 let g:airline_powerline_fonts = 1
+set guifont=Ricty\ for\ Powerline:h18
 
 "-----------------------------------------------------------------------------
 "
