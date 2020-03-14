@@ -5,16 +5,18 @@
 if [ -x /usr/libexec/path_helper ]; then
   eval `/usr/libexec/path_helper -s`
 fi
-export NODEBREW_ROOT=/usr/local/var/nodebrew
-if [ -d "${NODEBREW_ROOT}" ]; then
-  export PATH="${NODEBREW_ROOT}/current/bin:$PATH"
+
+if [ -d "/usr/local/opt/imagemagick@6" ]; then
+  export PATH="/usr/local/opt/imagemagick@6/bin:$PATH"
 fi
 export PATH="${HOME}/bin:$PATH"
-eval "$(rbenv init -)"
 
 if [ -d "$HOME/perl5" ]; then
   eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
 fi
 
+if [ -f "$HOME/.config/secrets" ];then
+  . "$HOME/.config/secrets"
+fi
+
 export EDITOR=vim
-export HOMEBREW_GITHUB_API_TOKEN=

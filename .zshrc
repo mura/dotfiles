@@ -65,6 +65,9 @@ alias mv='mv -i'
 # Wake on LAN
 alias wol_skyline='wakeonlan 38:2C:4A:5F:2C:36'
 
+# anyenv
+eval "$(anyenv init -)"
+
 # zplug
 if [ -d "/usr/local/opt/zplug" ]; then
   # Homebrew
