@@ -16,11 +16,11 @@ set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
 if dein#load_state(expand('~/.cache/dein'))
   call dein#begin(expand('~/.cache/dein'))
 
-  call dein#add('Shougo/dein.vim')
+  call dein#add('~/.cache/dein/repos/github.com/Shougo/dein.vim')
 
-  call dein#add('Shougo/neocomplete.vim')
-  call dein#add('Shougo/neomru.vim')
-  call dein#add('Shougo/neosnippet')
+  call dein#add('Shougo/deoplete.nvim')
+  "call dein#add('Shougo/neomru.vim')
+  call dein#add('Shougo/neosnippet.vim')
 
   call dein#add('vim-jp/vimdoc-ja')
   "call dein#add('itchyny/lightline.vim')
@@ -96,7 +96,7 @@ set t_Co=256
 let g:airline_theme='solarized'
 let g:airline_solarized_bg='dark'
 let g:airline_powerline_fonts = 1
-set guifont=Ricty\ for\ Powerline:h18
+set guifont=Cica:h18
 
 "-----------------------------------------------------------------------------
 "
