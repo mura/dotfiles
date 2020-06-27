@@ -40,9 +40,14 @@ setopt null_glob            # グロブがマッチしないときエラーに�
 ###
 # Set shell prompt
 ###
-autoload -U colors; colors
-PROMPT="%{$fg[cyan]%}%n@%m%{$reset_color%}%(!.#.$) "
-RPROMPT="%{$fg[magenta]%}[ %~ ]%{$reset_color%}"
+if [ -f "/usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme" ]; then
+  source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
+  [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+else
+  autoload -U colors; colors
+  PROMPT="%{$fg[cyan]%}%n@%m%{$reset_color%}%(!.#.$) "
+  RPROMPT="%{$fg[magenta]%}[ %~ ]%{$reset_color%}"
+fi
 
 #==========================================================#
 # コマンドのエイリアス
