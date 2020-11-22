@@ -23,3 +23,4 @@ if [ -f "$HOME/.config/secrets" ];then
 fi
 
 export EDITOR=vim
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
