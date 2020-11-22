@@ -11,23 +11,33 @@ set fileencodings=utf-8,euc-jp,sjis,iso-2022-jp
 if &compatible
   set nocompatible
 endif
-set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
 
-if dein#load_state(expand('~/.cache/dein'))
-  call dein#begin(expand('~/.cache/dein'))
+set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
+let g:python3_host_prog = expand('~/venv/nvim/bin/python3')
+
+if dein#load_state('~/.cache/dein')
+  call dein#begin('~/.cache/dein')
 
   call dein#add('~/.cache/dein/repos/github.com/Shougo/dein.vim')
-
   call dein#add('Shougo/deoplete.nvim')
-  "call dein#add('Shougo/neomru.vim')
-  call dein#add('Shougo/neosnippet.vim')
+  if !has('nvim')
+    call dein#add('roxma/nvim-yarp')
+    call dein#add('roxma/vim-hug-neovim-rpc')
+  endif
+  let g:deoplete#enable_at_startup = 1
 
-  call dein#add('vim-jp/vimdoc-ja')
-  "call dein#add('itchyny/lightline.vim')
+  call dein#add('jmcantrell/vim-virtualenv')
+
+  call dein#add('Shougo/neosnippet.vim')
+  call dein#add('Shougo/neosnippet-snippets')
+
   call dein#add('vim-airline/vim-airline')
   call dein#add('vim-airline/vim-airline-themes')
-  call dein#add('tyru/caw.vim.git')
+  call dein#add('lifepillar/vim-solarized8')
+
+  call dein#add('tyru/caw.vim')
   call dein#add('leafgarland/typescript-vim')
+  call dein#add('vim-jp/vimdoc-ja')
 
   call dein#end()
   call dein#save_state()
@@ -77,7 +87,6 @@ set hlsearch
 "ステータスラインを常に表示
 set laststatus=2
 "ステータスラインに文字コードと改行文字を表示する
-"set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
 set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%y%=%l,%c%V%8P
 "HTML変換時にCSSを使用する
 let html_use_css=1
@@ -93,28 +102,12 @@ set expandtab
 
 " airline
 set t_Co=256
+set termguicolors
 let g:airline_theme='solarized'
 let g:airline_solarized_bg='dark'
 let g:airline_powerline_fonts = 1
-set guifont=Cica:h18
-
-"-----------------------------------------------------------------------------
-"
-"
-map <Esc>[1~ <Home>
-map <Esc>[2~ <Insert>
-map <Esc>[3~ <Delete>
-map <Esc>[4~ <End>
-map <Esc>[5~ <PageUp>
-map <Esc>[6~ <PageDown>
-map! <Esc>[1~ <Home>
-map! <Esc>[2~ <Insert>
-map! <Esc>[3~ <Delete>
-map! <Esc>[4~ <End>
-map! <Esc>[5~ <PageUp>
-map! <Esc>[6~ <PageDown>
-
-nmap <Leader>c <Plug>(caw:i:toggle)
-vmap <Leader>c <Plug>(caw:i:toggle)
+" colorscheme
+set background=dark
+colorscheme solarized8
 
 " vim: set ts=2 sw=4 sts=0 expandtab:
