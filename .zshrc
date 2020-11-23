@@ -38,42 +38,8 @@ setopt null_glob            # グロブがマッチしないときエラーに�
 #setopt xtrace               # デバッグ用 コマンドラインがどのように展開されたか表示
 
 ###
-# Set shell prompt
-###
-if [ -f "/usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme" ]; then
-  source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
-  [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-else
-  autoload -U colors; colors
-  PROMPT="%{$fg[cyan]%}%n@%m%{$reset_color%}%(!.#.$) "
-  RPROMPT="%{$fg[magenta]%}[ %~ ]%{$reset_color%}"
-fi
-
-#==========================================================#
-# コマンドのエイリアス
-#==========================================================#
-#---- Fedoraから移植 --------------------------------------#
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias grep='grep --color=auto'
-if [ "$(uname)" = "Darwin" ]; then
-  alias ls='ls -G'
-else
-  alias ls='ls --color'
-fi
-alias ll='ls -l'
-alias l.='ls -d.*'
-#---- /Fedoraから移植 -------------------------------------#
-alias rm='rm -i'
-alias mv='mv -i'
-
-# Wake on LAN
-alias wol_skyline='wakeonlan 38:2C:4A:5F:2C:36'
-
-# anyenv
-eval "$(anyenv init -)"
-
 # zplug
+###
 if [ -d "/usr/local/opt/zplug" ]; then
   # Homebrew
   export ZPLUG_HOME=/usr/local/opt/zplug
@@ -87,6 +53,24 @@ elif [ -d "/usr/share/zsh/scripts/zplug" ]; then
   export ZPLUG_HOME=~/.zplug
   source /usr/share/zsh/scripts/zplug/init.zsh
 fi
+
+###
+# Set shell prompt
+###
+if [ -f "/usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme" ]; then
+  source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
+  [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+elif type "zplug" >/dev/null 2>&1; then
+  zplug 'romkatv/powerlevel10k', as:theme, depth:1
+  [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+else
+  autoload -U colors; colors
+  PROMPT="%{$fg[cyan]%}%n@%m%{$reset_color%}%(!.#.$) "
+  RPROMPT="%{$fg[magenta]%}[ %~ ]%{$reset_color%}"
+fi
+
+# anyenv
+eval "$(anyenv init -)"
 
 # zsh-completions
 if [ -d "/usr/local/share/zsh-completions" ]; then
@@ -119,3 +103,33 @@ if [ -d "/usr/local/Caskroom/google-cloud-sdk" ]; then
   source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
   source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
 fi
+
+# zplug load
+if [ $zplugs ]; then
+  zplug load
+fi
+
+###
+# コマンドのエイリアス
+###
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias grep='grep --color=auto'
+if [ "$(uname)" = "Darwin" ]; then
+  alias ls='ls -G'
+else
+  alias ls='ls --color'
+fi
+alias ll='ls -l'
+alias l.='ls -d.*'
+alias rm='rm -i'
+alias mv='mv -i'
+
+###
+# 便利関数
+###
+function update() {
+  brew upgrade
+  anyenv update
+  nvim --headless -c "call dein#update()" -c 'q'
+}
