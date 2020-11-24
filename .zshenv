@@ -27,4 +27,4 @@ if type "brew" >/dev/null 2>&1; then
   export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 fi
 
-export EDITOR=vim
+export EDITOR=nvim

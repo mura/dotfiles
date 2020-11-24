@@ -124,6 +124,7 @@ alias ll='ls -l'
 alias l.='ls -d.*'
 alias rm='rm -i'
 alias mv='mv -i'
+alias vim='nvim'
 
 ###
 # 便利関数
