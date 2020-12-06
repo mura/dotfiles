@@ -13,6 +13,7 @@ if &compatible
 endif
 
 set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
+let g:loaded_python_provider = 0
 let g:python3_host_prog = expand('~/venv/nvim/bin/python3')
 
 if dein#load_state('~/.cache/dein')
