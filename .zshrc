@@ -52,6 +52,10 @@ elif [ -d "/usr/share/zsh/scripts/zplug" ]; then
   # Arch
   export ZPLUG_HOME=~/.zplug
   source /usr/share/zsh/scripts/zplug/init.zsh
+elif [ -f ~/.zplug/init.zsh ]; then
+  # Manual
+  export ZPLUG_HOME=~/.zplug
+  source $ZPLUG_HOME/init.zsh
 fi
 
 ###
