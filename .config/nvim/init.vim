@@ -14,7 +14,9 @@ endif
 
 set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
 let g:loaded_python_provider = 0
-let g:python3_host_prog = expand('~/venv/nvim/bin/python3')
+if executable(expand('~/venv/nvim/bin/python3'))
+  let g:python3_host_prog = expand('~/venv/nvim/bin/python3')
+endif
 
 if dein#load_state('~/.cache/dein')
   call dein#begin('~/.cache/dein')
@@ -111,4 +113,4 @@ let g:airline_powerline_fonts = 1
 set background=dark
 colorscheme solarized8
 
-" vim: set ts=2 sw=4 sts=0 expandtab:
+"vim: set ts=2 sw=2 sts=0 expandtab:
