@@ -73,15 +73,11 @@ else
   RPROMPT="%{$fg[magenta]%}[ %~ ]%{$reset_color%}"
 fi
 
-# anyenv
-eval "$(anyenv init -)"
-
 # zsh-completions
 if [ -d "$HOMEBREW_PREFIX/share/zsh-completions" ]; then
   fpath=("$HOMEBREW_PREFIX/share/zsh-completions" $fpath)
   zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-  autoload -Uz compinit
-  compinit
+  autoload -Uz compinit; compinit
 else
   zplug 'zsh-users/zsh-completions'
 fi
