@@ -40,9 +40,9 @@ setopt null_glob            # グロブがマッチしないときエラーに�
 ###
 # zplug
 ###
-if [ -d "/usr/local/opt/zplug" ]; then
+if [ -d "$HOMEBREW_PREFIX/opt/zplug" ]; then
   # Homebrew
-  export ZPLUG_HOME=/usr/local/opt/zplug
+  export ZPLUG_HOME="$HOMEBREW_PREFIX/opt/zplug"
   source $ZPLUG_HOME/init.zsh
 elif [ -d "/usr/share/zplug" ]; then
   # Ubuntu
@@ -61,8 +61,8 @@ fi
 ###
 # Set shell prompt
 ###
-if [ -f "/usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme" ]; then
-  source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
+if [ -f "$HOMEBREW_PREFIX/opt/powerlevel10k/powerlevel10k.zsh-theme" ]; then
+  source "$HOMEBREW_PREFIX/opt/powerlevel10k/powerlevel10k.zsh-theme"
   [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 elif type "zplug" >/dev/null 2>&1; then
   zplug 'romkatv/powerlevel10k', as:theme, depth:1
@@ -77,8 +77,8 @@ fi
 eval "$(anyenv init -)"
 
 # zsh-completions
-if [ -d "/usr/local/share/zsh-completions" ]; then
-  fpath=(/usr/local/share/zsh-completions $fpath)
+if [ -d "$HOMEBREW_PREFIX/share/zsh-completions" ]; then
+  fpath=("$HOMEBREW_PREFIX/share/zsh-completions" $fpath)
   zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
   autoload -Uz compinit
   compinit
@@ -87,25 +87,29 @@ else
 fi
 
 # zsh-syntax-highlighting
-if [ -f "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
-  source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if [ -f "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
+  source "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 elif [ -f "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
-  source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  source "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 else
   zplug 'zsh-users/zsh-syntax-highlighting'
 fi
 
 # zsh-history-substring-search
-if [ -f "/usr/local/share/zsh-history-substring-search/zsh-history-substring-search.zsh" ]; then
-  source /usr/local/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+if [ -f "$HOMEBREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh" ]; then
+  source "$HOMEBREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
+  bindkey '^[[A' history-substring-search-up
+  bindkey '^[[B' history-substring-search-down
 else
   zplug 'zsh-users/zsh-history-substring-search'
+  bindkey '^[[A' history-substring-search-up
+  bindkey '^[[B' history-substring-search-down
 fi
 
 # Google Cloud SDK
-if [ -d "/usr/local/Caskroom/google-cloud-sdk" ]; then
-  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
-  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
+if [ -d "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk" ]; then
+  source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+  source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 fi
 
 # zplug load
