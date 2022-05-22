@@ -1,0 +1,10 @@
+# zsh-completions
+if [[ -d "$HOMEBREW_PREFIX/share/zsh-completions" ]]; then
+  fpath=("$HOMEBREW_PREFIX/share/zsh-completions" $fpath)
+  return $?
+elif type "zplug" >/dev/null 2>&1; then
+  zplug 'zsh-users/zsh-completions'
+  return $?
+fi
+
+return 1

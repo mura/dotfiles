@@ -40,52 +40,44 @@ setopt null_glob            # グロブがマッチしないときエラーに�
 ###
 # zplug
 ###
-if [ -d "$HOMEBREW_PREFIX/opt/zplug" ]; then
+if [[ -d "$HOMEBREW_PREFIX/opt/zplug" ]]; then
   # Homebrew
   export ZPLUG_HOME="$HOMEBREW_PREFIX/opt/zplug"
   source $ZPLUG_HOME/init.zsh
-elif [ -d "/usr/share/zplug" ]; then
+elif [[ -d "/usr/share/zplug" ]]; then
   # Ubuntu
   export ZPLUG_HOME=~/.zplug
   source /usr/share/zplug/init.zsh
-elif [ -d "/usr/share/zsh/scripts/zplug" ]; then
+elif [[ -d "/usr/share/zsh/scripts/zplug" ]]; then
   # Arch
   export ZPLUG_HOME=~/.zplug
   source /usr/share/zsh/scripts/zplug/init.zsh
-elif [ -f ~/.zplug/init.zsh ]; then
+elif [[ -f ~/.zplug/init.zsh ]]; then
   # Manual
   export ZPLUG_HOME=~/.zplug
   source $ZPLUG_HOME/init.zsh
 fi
 
+# zsh user functions
+fpath=(~/.local/share/zsh/functions $fpath)
+
 ###
 # Set shell prompt
 ###
-if [ -f "$HOMEBREW_PREFIX/opt/powerlevel10k/powerlevel10k.zsh-theme" ]; then
-  source "$HOMEBREW_PREFIX/opt/powerlevel10k/powerlevel10k.zsh-theme"
-  [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-elif type "zplug" >/dev/null 2>&1; then
-  zplug 'romkatv/powerlevel10k', as:theme, depth:1
-  [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-else
+autoload -Uz init-powerlevel10k; init-powerlevel10k
+if [[ $? -ne 0 ]]; then
   autoload -U colors; colors
   PROMPT="%{$fg[cyan]%}%n@%m%{$reset_color%}%(!.#.$) "
   RPROMPT="%{$fg[magenta]%}[ %~ ]%{$reset_color%}"
 fi
 
-# zsh-completions
-if [ -d "$HOMEBREW_PREFIX/share/zsh-completions" ]; then
-  fpath=("$HOMEBREW_PREFIX/share/zsh-completions" $fpath)
+autoload -Uz init-completions
+if init-completions; then
   zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
   autoload -Uz compinit; compinit
-else
-  zplug 'zsh-users/zsh-completions'
 fi
 
-# zsh users plugin
-fpath=(~/.local/share/zsh/functions $fpath)
 autoload -Uz zsh-users-plugin
-
 zsh-users-plugin zsh-syntax-highlighting
 if zsh-users-plugin zsh-history-substring-search; then
   bindkey '^[[A' history-substring-search-up
@@ -93,12 +85,12 @@ if zsh-users-plugin zsh-history-substring-search; then
 fi
 
 # Google Cloud SDK
-if [ -d "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk" ]; then
+if [[ -d "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk" ]]; then
   source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 fi
 
 # zplug load
-if [ $zplugs ]; then
+if [[ $zplugs ]]; then
   zplug load
 fi
 
