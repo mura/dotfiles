@@ -1,5 +1,6 @@
-if [ -d "$HOMEBREW_PREFIX/opt/imagemagick@6" ]; then
-  export PATH="$HOMEBREW_PREFIX/opt/imagemagick@6/bin:$PATH"
+# Google Cloud SDK
+if [ -d "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk" ]; then
+  source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
 fi
 
 if [ -d "$HOME/.anyenv" ]; then

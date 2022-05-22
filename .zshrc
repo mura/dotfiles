@@ -82,29 +82,18 @@ else
   zplug 'zsh-users/zsh-completions'
 fi
 
-# zsh-syntax-highlighting
-if [ -f "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
-  source "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-elif [ -f "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
-  source "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-else
-  zplug 'zsh-users/zsh-syntax-highlighting'
-fi
+# zsh users plugin
+fpath=(~/.local/share/zsh/functions $fpath)
+autoload -Uz zsh-users-plugin
 
-# zsh-history-substring-search
-if [ -f "$HOMEBREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh" ]; then
-  source "$HOMEBREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
-  bindkey '^[[A' history-substring-search-up
-  bindkey '^[[B' history-substring-search-down
-else
-  zplug 'zsh-users/zsh-history-substring-search'
+zsh-users-plugin zsh-syntax-highlighting
+if zsh-users-plugin zsh-history-substring-search; then
   bindkey '^[[A' history-substring-search-up
   bindkey '^[[B' history-substring-search-down
 fi
 
 # Google Cloud SDK
 if [ -d "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk" ]; then
-  source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
   source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 fi
 

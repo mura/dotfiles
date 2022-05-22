@@ -1,0 +1,13 @@
+name=$1
+if [ -f "/usr/local/share/$name/$name.zsh" ]; then
+  source "/usr/local/share/$name/$name.zsh"
+  return 0
+elif [ -f "/usr/share/$name/$name.zsh" ]; then
+  source "/usr/share/$name/$name.zsh"
+  return 0
+elif type "zplug" >/dev/null 2>&1; then
+  zplug "zsh-users/$name"
+  return 0
+fi
+
+return 1
