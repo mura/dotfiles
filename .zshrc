@@ -135,6 +135,7 @@ alias vim='nvim'
 ###
 function update() {
   brew upgrade
+  brew bundle dump -f
   anyenv update
   nvim --headless -c "call dein#update()" -c 'q'
 }

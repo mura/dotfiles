@@ -7,9 +7,11 @@ if [[ -x /usr/libexec/path_helper ]]; then
 fi
 
 if [[ -x "/usr/local/bin/brew" ]]; then
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  eval "$(/usr/local/bin/brew shellenv)"
+  export HOMEBREW_BUNDLE_FILE=~/.config/brewfile/Brewfile
 elif [[ -x /bin/bash && -d "/home/linuxbrew/.linuxbrew" ]]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  export HOMEBREW_BUNDLE_FILE=~/.config/brewfile/Brewfile.linux
 fi
 
 if [[ -f "$HOME/.config/secrets" ]];then
