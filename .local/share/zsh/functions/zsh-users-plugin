@@ -1,6 +1,6 @@
 name=$1
-if [[ -f "/usr/local/share/$name/$name.zsh" ]]; then
-  source "/usr/local/share/$name/$name.zsh"
+if [[ -n "$HOMEBREW_PREFIX" ]] && [[ -f "$HOMEBREW_PREFIX/share/$name/$name.zsh" ]]; then
+  source "$HOMEBREW_PREFIX/share/$name/$name.zsh"
   return $?
 elif [[ -f "/usr/share/$name/$name.zsh" ]]; then
   source "/usr/share/$name/$name.zsh"
