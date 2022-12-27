@@ -18,4 +18,8 @@ if [[ -f "$HOME/.config/secrets" ]];then
   . "$HOME/.config/secrets"
 fi
 
-export EDITOR=nvim
+if [[ -n "$(command -v nvim)" ]]; then
+  export EDITOR=nvim
+elif [[ -n "$(command -v vim)" ]]; then
+  export EDITOR=vim
+fi
