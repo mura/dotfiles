@@ -8,31 +8,20 @@ set fileencodings=utf-8,euc-jp,sjis,iso-2022-jp
 "-----------------------------------------------------------------------------
 " dein.vim
 "
-if &compatible
-  set nocompatible
+let g:loaded_python_provider = 0
+if executable(expand('~/.local/share/venv/nvim/bin/python3'))
+  let g:python3_host_prog = expand('~/.local/share/venv/nvim/bin/python3')
 endif
 
 set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
-let g:loaded_python_provider = 0
-if executable(expand('~/venv/nvim/bin/python3'))
-  let g:python3_host_prog = expand('~/venv/nvim/bin/python3')
-endif
-
 if dein#load_state('~/.cache/dein')
   call dein#begin('~/.cache/dein')
 
   call dein#add('~/.cache/dein/repos/github.com/Shougo/dein.vim')
-  call dein#add('Shougo/deoplete.nvim')
-  if !has('nvim')
-    call dein#add('roxma/nvim-yarp')
-    call dein#add('roxma/vim-hug-neovim-rpc')
-  endif
-  let g:deoplete#enable_at_startup = 1
+  call dein#add('Shougo/ddc.vim')
+  call dein#add('vim-denops/denops.vim')
 
   call dein#add('jmcantrell/vim-virtualenv')
-
-  call dein#add('Shougo/neosnippet.vim')
-  call dein#add('Shougo/neosnippet-snippets')
 
   call dein#add('vim-airline/vim-airline')
   call dein#add('vim-airline/vim-airline-themes')
@@ -40,7 +29,6 @@ if dein#load_state('~/.cache/dein')
 
   call dein#add('tyru/caw.vim')
   call dein#add('leafgarland/typescript-vim')
-  call dein#add('vim-jp/vimdoc-ja')
 
   call dein#end()
   call dein#save_state()
