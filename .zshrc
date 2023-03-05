@@ -88,7 +88,7 @@ _powerlevel10k_path() {
   fi
 }
 _plugin_path () {
-  name=$1
+  local name=$1
   if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/share/$name" ]]; then
     echo "$HOMEBREW_PREFIX/share/$name"
   elif [[ -d "/usr/share/$name" ]]; then
@@ -119,8 +119,8 @@ fi
 # plugin setting
 ###
 _enable_powerlevel10k () {
-  plugin_path=$(_powerlevel10k_path)
-  if [[ -n "$plugin_path" ]]; then
+  local plugin_path=$(_powerlevel10k_path)
+  if [[ -n "$plugin_path" && -f "$plugin_path/powerlevel10k.zsh-theme" ]]; then
     source "$plugin_path/powerlevel10k.zsh-theme"
     [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
     return $?
@@ -131,7 +131,7 @@ _enable_powerlevel10k () {
   return 1
 }
 _enable_completions () {
-  plugin_path=$(_plugin_path zsh-completions)
+  local plugin_path=$(_plugin_path zsh-completions)
   if [[ -n "$plugin_path" ]]; then
     fpath=("$plugin_path" $fpath)
     return 0
@@ -139,8 +139,8 @@ _enable_completions () {
   [[ -n "$(command -v zplug)" ]] && zplug check 'zsh-users/zsh-completions'
 }
 _enable_plugin () {
-  name=$1
-  plugin_path=$(_plugin_path "$name")
+  local name=$1
+  local plugin_path=$(_plugin_path "$name")
   if [[ -n "$plugin_path" && -f "$plugin_path/$name.zsh" ]]; then
     source "$plugin_path/$name.zsh"
     return $?
