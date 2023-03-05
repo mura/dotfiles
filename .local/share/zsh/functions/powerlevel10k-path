@@ -1,0 +1,5 @@
+emulate -L zsh
+
+if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/opt/powerlevel10k" ]]; then
+  echo "$HOMEBREW_PREFIX/opt/powerlevel10k"
+fi

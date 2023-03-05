@@ -1,0 +1,15 @@
+emulate -L zsh
+
+autoload -Uz powerlevel10k-path
+
+local plugin_path=$(powerlevel10k-path)
+if [[ -n "$plugin_path" && -f "$plugin_path/powerlevel10k.zsh-theme" ]]; then
+  source "$plugin_path/powerlevel10k.zsh-theme"
+  [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+  return $?
+elif [[ -n "$(command -v zplug)" ]] && zplug check 'romkatv/powerlevel10k'; then
+  [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+  return $?
+fi
+
+return 1

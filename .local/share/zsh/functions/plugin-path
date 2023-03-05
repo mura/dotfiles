@@ -1,0 +1,8 @@
+emulate -L zsh
+
+local name=$1
+if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/share/$name" ]]; then
+  echo "$HOMEBREW_PREFIX/share/$name"
+elif [[ -d "/usr/share/$name" ]]; then
+  echo "/usr/share/$name"
+fi

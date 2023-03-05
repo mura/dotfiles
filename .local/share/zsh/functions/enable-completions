@@ -1,0 +1,11 @@
+emulate -L zsh
+
+autoload -Uz plugin-path
+
+local plugin_path=$(plugin-path zsh-completions)
+if [[ -n "$plugin_path" ]]; then
+  fpath=("$plugin_path" $fpath)
+  return 0
+fi
+
+[[ -n "$(command -v zplug)" ]] && zplug check 'zsh-users/zsh-completions'

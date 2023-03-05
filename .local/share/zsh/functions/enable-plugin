@@ -1,0 +1,12 @@
+emulate -L zsh
+
+autoload -Uz plugin-path
+
+local name=$1
+local plugin_path=$(plugin-path "$name")
+if [[ -n "$plugin_path" && -f "$plugin_path/$name.zsh" ]]; then
+  source "$plugin_path/$name.zsh"
+  return $?
+fi
+
+[[ -n "$(command -v zplug)" ]] && zplug check "zsh-users/$name"

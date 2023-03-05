@@ -37,6 +37,8 @@ setopt null_glob            # グロブがマッチしないときエラーに�
 #setopt ignore_eof           # Ctrl-D でログアウトするのを抑制する。
 #setopt xtrace               # デバッグ用 コマンドラインがどのように展開されたか表示
 
+fpath=(~/.local/share/zsh/functions $fpath)
+
 ###
 # Homebrew
 ###
@@ -82,31 +84,18 @@ fi
 ###
 # zsh plugins
 ###
-_powerlevel10k_path() {
-  if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/opt/powerlevel10k" ]]; then
-    echo "$HOMEBREW_PREFIX/opt/powerlevel10k"
-  fi
-}
-_plugin_path () {
-  local name=$1
-  if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/share/$name" ]]; then
-    echo "$HOMEBREW_PREFIX/share/$name"
-  elif [[ -d "/usr/share/$name" ]]; then
-    echo "/usr/share/$name"
-  fi
-}
-
+autoload -Uz powerlevel10k-path plugin-path
 if [[ -n "$(command -v zplug)" ]]; then
-  if [[ -z "$(_powerlevel10k_path)" ]]; then
+  if [[ -z "$(powerlevel10k-path)" ]]; then
     zplug 'romkatv/powerlevel10k', as:theme, depth:1
   fi
-  if [[ -z "$(_plugin_path zsh-completions)" ]]; then
+  if [[ -z "$(plugin-path zsh-completions)" ]]; then
     zplug 'zsh-users/zsh-completions'
   fi
-  if [[ -z "$(_plugin_path zsh-syntax-highlighting)" ]]; then
+  if [[ -z "$(plugin-path zsh-syntax-highlighting)" ]]; then
     zplug 'zsh-users/zsh-syntax-highlighting'
   fi
-  if [[ -z "$(_plugin_path zsh-syntax-highlighting)" ]]; then
+  if [[ -z "$(plugin-path zsh-syntax-highlighting)" ]]; then
     zplug 'zsh-users/zsh-history-substring-search'
   fi
 
@@ -118,55 +107,28 @@ fi
 ###
 # plugin setting
 ###
-_enable_powerlevel10k () {
-  local plugin_path=$(_powerlevel10k_path)
-  if [[ -n "$plugin_path" && -f "$plugin_path/powerlevel10k.zsh-theme" ]]; then
-    source "$plugin_path/powerlevel10k.zsh-theme"
-    [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-    return $?
-  elif [[ -n "$(command -v zplug)" ]] && zplug check 'romkatv/powerlevel10k'; then
-    [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-    return $?
-  fi
-  return 1
-}
-_enable_completions () {
-  local plugin_path=$(_plugin_path zsh-completions)
-  if [[ -n "$plugin_path" ]]; then
-    fpath=("$plugin_path" $fpath)
-    return 0
-  fi
-  [[ -n "$(command -v zplug)" ]] && zplug check 'zsh-users/zsh-completions'
-}
-_enable_plugin () {
-  local name=$1
-  local plugin_path=$(_plugin_path "$name")
-  if [[ -n "$plugin_path" && -f "$plugin_path/$name.zsh" ]]; then
-    source "$plugin_path/$name.zsh"
-    return $?
-  fi
-  [[ -n "$(command -v zplug)" ]] && zplug check "zsh-users/$name"
-}
-
-if ! _enable_powerlevel10k; then
+autoload -Uz enable-powerlevel10k
+if ! enable-powerlevel10k; then
   autoload -U colors; colors
   PROMPT="%{$fg[cyan]%}%n@%m%{$reset_color%}%(!.#.$) "
   RPROMPT="%{$fg[magenta]%}[ %~ ]%{$reset_color%}"
 fi
+unset -f enable-powerlevel10k
 
-if _enable_completions; then
+autoload -Uz enable-completions
+if enable-completions; then
   zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
   autoload -Uz compinit; compinit
 fi
+unset -f enable-completions
 
-_enable_plugin zsh-syntax-highlighting
-if _enable_plugin zsh-history-substring-search; then
+autoload -Uz enable-plugin
+enable-plugin zsh-syntax-highlighting
+if enable-plugin zsh-history-substring-search; then
   bindkey "${terminfo[kcuu1]}" history-substring-search-up
   bindkey "${terminfo[kcud1]}" history-substring-search-down
 fi
-
-unset -f _powerlevel10k_path _plugin_path
-unset -f _enable_powerlevel10k _enable_completions _enable_plugin
+unset -f enable-plugin
 
 ###
 # anyenv
@@ -199,7 +161,7 @@ fi
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias grep='grep --color=auto'
-if [ "$(uname)" = "Darwin" ]; then
+if [[ "$OSTYPE" =~ "^darwin" ]]; then
   alias ls='ls -G'
 else
   alias ls='ls --color'
@@ -215,9 +177,19 @@ fi
 ###
 # 便利関数
 ###
-function update() {
-  brew upgrade
-  brew bundle dump -f
-  anyenv update
-  nvim --headless -c "call dein#update()" -c 'q'
+update () {
+  if [[ -n "$(command -v apt)" ]]; then
+    sudo apt update
+    sudo apt upgrade -y --autoremove
+  fi
+  if [[ -n "$(command -v brew)" ]]; then
+    brew upgrade
+    brew bundle dump -f
+  fi
+  if [[ -n "$(command -v anyenv)" ]]; then
+    anyenv update
+  fi
+  if [[ -n "$(command -v nvim)" ]]; then
+    nvim --headless -c "call dein#update()" -c 'q'
+  fi
 }
