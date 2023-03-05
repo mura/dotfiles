@@ -38,9 +38,30 @@ setopt null_glob            # グロブがマッチしないときエラーに�
 #setopt xtrace               # デバッグ用 コマンドラインがどのように展開されたか表示
 
 ###
+# Homebrew
+###
+if [[ -x "/usr/local/bin/brew" ]]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+  export HOMEBREW_BUNDLE_FILE=~/.config/brewfile/Brewfile
+elif [[ -x /bin/bash && -d "/home/linuxbrew/.linuxbrew" ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  export HOMEBREW_BUNDLE_FILE=~/.config/brewfile/Brewfile.linux
+fi
+
+###
+# PATH
+###
+export PATH="$HOME/.local/bin:$PATH"
+if [[ -d "$HOME/.anyenv" ]]; then
+  export PATH="$HOME/.anyenv/bin:$PATH"
+fi
+
+typeset -gU PATH
+
+###
 # zplug
 ###
-if [[ -d "$HOMEBREW_PREFIX/opt/zplug" ]]; then
+if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/opt/zplug" ]]; then
   # Homebrew
   export ZPLUG_HOME="$HOMEBREW_PREFIX/opt/zplug"
   source $ZPLUG_HOME/init.zsh
@@ -58,40 +79,118 @@ elif [[ -f ~/.zplug/init.zsh ]]; then
   source $ZPLUG_HOME/init.zsh
 fi
 
-# zsh user functions
-fpath=(~/.local/share/zsh/functions $fpath)
+###
+# zsh plugins
+###
+_powerlevel10k_path() {
+  if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/opt/powerlevel10k" ]]; then
+    echo "$HOMEBREW_PREFIX/opt/powerlevel10k"
+  fi
+}
+_plugin_path () {
+  name=$1
+  if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/share/$name" ]]; then
+    echo "$HOMEBREW_PREFIX/share/$name"
+  elif [[ -d "/usr/share/$name" ]]; then
+    echo "/usr/share/$name"
+  fi
+}
+
+if [[ -n "$(command -v zplug)" ]]; then
+  if [[ -z "$(_powerlevel10k_path)" ]]; then
+    zplug 'romkatv/powerlevel10k', as:theme, depth:1
+  fi
+  if [[ -z "$(_plugin_path zsh-completions)" ]]; then
+    zplug 'zsh-users/zsh-completions'
+  fi
+  if [[ -z "$(_plugin_path zsh-syntax-highlighting)" ]]; then
+    zplug 'zsh-users/zsh-syntax-highlighting'
+  fi
+  if [[ -z "$(_plugin_path zsh-syntax-highlighting)" ]]; then
+    zplug 'zsh-users/zsh-history-substring-search'
+  fi
+
+  if [[ $zplugs ]]; then
+    zplug load
+  fi
+fi
 
 ###
-# Set shell prompt
+# plugin setting
 ###
-autoload -Uz init-powerlevel10k; init-powerlevel10k
-if [[ $? -ne 0 ]]; then
+_enable_powerlevel10k () {
+  plugin_path=$(_powerlevel10k_path)
+  if [[ -n "$plugin_path" ]]; then
+    source "$plugin_path/powerlevel10k.zsh-theme"
+    [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+    return $?
+  elif [[ -n "$(command -v zplug)" ]] && zplug check 'romkatv/powerlevel10k'; then
+    [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+    return $?
+  fi
+  return 1
+}
+_enable_completions () {
+  plugin_path=$(_plugin_path zsh-completions)
+  if [[ -n "$plugin_path" ]]; then
+    fpath=("$plugin_path" $fpath)
+    return 0
+  fi
+  [[ -n "$(command -v zplug)" ]] && zplug check 'zsh-users/zsh-completions'
+}
+_enable_plugin () {
+  name=$1
+  plugin_path=$(_plugin_path "$name")
+  if [[ -n "$plugin_path" && -f "$plugin_path/$name.zsh" ]]; then
+    source "$plugin_path/$name.zsh"
+    return $?
+  fi
+  [[ -n "$(command -v zplug)" ]] && zplug check "zsh-users/$name"
+}
+
+if ! _enable_powerlevel10k; then
   autoload -U colors; colors
   PROMPT="%{$fg[cyan]%}%n@%m%{$reset_color%}%(!.#.$) "
   RPROMPT="%{$fg[magenta]%}[ %~ ]%{$reset_color%}"
 fi
 
-autoload -Uz init-completions
-if init-completions; then
+if _enable_completions; then
   zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
   autoload -Uz compinit; compinit
 fi
 
-autoload -Uz zsh-users-plugin
-zsh-users-plugin zsh-syntax-highlighting
-if zsh-users-plugin zsh-history-substring-search; then
+_enable_plugin zsh-syntax-highlighting
+if _enable_plugin zsh-history-substring-search; then
   bindkey '^[[A' history-substring-search-up
   bindkey '^[[B' history-substring-search-down
 fi
 
+unset -f _powerlevel10k_path _plugin_path
+unset -f _enable_powerlevel10k _enable_completions _enable_plugin
+
+###
+# anyenv
+###
+if [[ -n "$(command -v anyenv)" ]]; then
+  eval "$(anyenv init -)"
+fi
+if [[ -n "$(command -v pyenv)" && -d "$(pyenv root)/plugins/pyenv-virtualenv" ]]; then
+  eval "$(pyenv virtualenv-init -)"
+fi
+
 # Google Cloud SDK
-if [[ -d "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk" ]]; then
+if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk" ]]; then
+  source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
   source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 fi
 
-# zplug load
-if [[ $zplugs ]]; then
-  zplug load
+###
+# 共通コマンド
+###
+if [[ -n "$(command -v nvim)" ]]; then
+  export EDITOR=nvim
+elif [[ -n "$(command -v vim)" ]]; then
+  export EDITOR=vim
 fi
 
 ###
