@@ -161,8 +161,8 @@ fi
 
 _enable_plugin zsh-syntax-highlighting
 if _enable_plugin zsh-history-substring-search; then
-  bindkey '^[[A' history-substring-search-up
-  bindkey '^[[B' history-substring-search-down
+  bindkey "${terminfo[kcuu1]}" history-substring-search-up
+  bindkey "${terminfo[kcud1]}" history-substring-search-down
 fi
 
 unset -f _powerlevel10k_path _plugin_path
