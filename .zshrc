@@ -57,6 +57,9 @@ export PATH="$HOME/.local/bin:$PATH"
 if [[ -d "$HOME/.anyenv" ]]; then
   export PATH="$HOME/.anyenv/bin:$PATH"
 fi
+if [[ -d "/mnt/c/Users/mura/AppData/Local/Programs/Microsoft VS Code/bin" ]]; then
+  export PATH="/mnt/c/Users/mura/AppData/Local/Programs/Microsoft VS Code/bin:$PATH"
+fi
 
 typeset -gU PATH
 
@@ -144,6 +147,11 @@ fi
 if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk" ]]; then
   source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
   source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+fi
+
+# ssh agent for WSL
+if [[ -n "$(command -v npiperelay.exe)" ]]; then
+  autoload -U agent-bridge; agent-bridge
 fi
 
 ###
