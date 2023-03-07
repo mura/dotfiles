@@ -1,40 +1,60 @@
 "-----------------------------------------------------------------------------
+" dein.vim
+"
+" Ward off unexpected things that your distro might have made, as
+" well as sanely reset options when re-sourcing .vimrc
+set nocompatible
+
+" Set Dein base path (required)
+let s:dein_base = expand('~/.cache/dein')
+
+" Set Dein source path (required)
+let s:dein_src = expand('~/.cache/dein/repos/github.com/Shougo/dein.vim')
+
+" Set Dein runtime path (required)
+execute 'set runtimepath+=' . s:dein_src
+
+" Call Dein initialization (required)
+call dein#begin(s:dein_base)
+
+call dein#add(s:dein_src)
+
+" Your plugins go here:
+"call dein#add('Shougo/ddc.vim')
+"call dein#add('vim-denops/denops.vim')
+call dein#add('jmcantrell/vim-virtualenv')
+call dein#add('vim-airline/vim-airline')
+call dein#add('vim-airline/vim-airline-themes')
+call dein#add('lifepillar/vim-solarized8')
+call dein#add('tyru/caw.vim')
+call dein#add('leafgarland/typescript-vim')
+
+" Finish Dein initialization (required)
+call dein#end()
+
+" Attempt to determine the type of a file based on its name and possibly its
+" contents. Use this to allow intelligent auto-indenting for each filetype,
+" and for plugins that are filetype specific.
+if has('filetype')
+  filetype indent plugin on
+endif
+
+" Enable syntax highlighting
+if has('syntax')
+  syntax on
+endif
+
+" Uncomment if you want to install not-installed plugins on startup.
+if dein#check_install()
+ call dein#install()
+endif
+
+"-----------------------------------------------------------------------------
 " 文字コード関連
 "
 set termencoding=utf-8
 set encoding=utf-8
 set fileencodings=utf-8,euc-jp,sjis,iso-2022-jp
-
-"-----------------------------------------------------------------------------
-" dein.vim
-"
-let g:loaded_python_provider = 0
-if executable(expand('~/.local/share/venv/nvim/bin/python3'))
-  let g:python3_host_prog = expand('~/.local/share/venv/nvim/bin/python3')
-endif
-
-set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
-if dein#load_state('~/.cache/dein')
-  call dein#begin('~/.cache/dein')
-
-  call dein#add('~/.cache/dein/repos/github.com/Shougo/dein.vim')
-  call dein#add('Shougo/ddc.vim')
-  call dein#add('vim-denops/denops.vim')
-
-  call dein#add('jmcantrell/vim-virtualenv')
-
-  call dein#add('vim-airline/vim-airline')
-  call dein#add('vim-airline/vim-airline-themes')
-  call dein#add('lifepillar/vim-solarized8')
-
-  call dein#add('tyru/caw.vim')
-  call dein#add('leafgarland/typescript-vim')
-
-  call dein#end()
-  call dein#save_state()
-endif
-
-filetype plugin indent on
 
 "-----------------------------------------------------------------------------
 " 編集関連
