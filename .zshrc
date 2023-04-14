@@ -143,6 +143,13 @@ if [[ -n "$(command -v pyenv)" && -d "$(pyenv root)/plugins/pyenv-virtualenv" ]]
   eval "$(pyenv virtualenv-init -)"
 fi
 
+###
+# asdf
+###
+if [[ -n "$HOMEBREW_PREFIX" && -f "$HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh" ]]; then
+  . "$HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh"
+fi
+
 # Google Cloud SDK
 if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk" ]]; then
   source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
