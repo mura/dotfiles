@@ -42,7 +42,10 @@ fpath=(~/.local/share/zsh/functions $fpath)
 ###
 # Homebrew
 ###
-if [[ -x "/usr/local/bin/brew" ]]; then
+if [[ -x "/opt/homebrew/bin/brew" ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+  export HOMEBREW_BUNDLE_FILE=~/.config/brewfile/Brewfile
+elif [[ -x "/usr/local/bin/brew" ]]; then
   eval "$(/usr/local/bin/brew shellenv)"
   export HOMEBREW_BUNDLE_FILE=~/.config/brewfile/Brewfile
 elif [[ -x /bin/bash && -d "/home/linuxbrew/.linuxbrew" ]]; then
