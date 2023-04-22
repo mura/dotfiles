@@ -131,6 +131,8 @@ unset -f enable-completions
 autoload -Uz enable-plugin
 enable-plugin zsh-syntax-highlighting
 if enable-plugin zsh-history-substring-search; then
+  bindkey '^[[A' history-substring-search-up
+  bindkey '^[[B' history-substring-search-down
   bindkey "${terminfo[kcuu1]}" history-substring-search-up
   bindkey "${terminfo[kcud1]}" history-substring-search-down
 fi
