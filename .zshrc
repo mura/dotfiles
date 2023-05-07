@@ -57,8 +57,11 @@ fi
 # PATH
 ###
 export PATH="$HOME/.local/bin:$PATH"
-if [[ -d "$HOME/.anyenv" ]]; then
+if [[ -d "$HOME/.anyenv/bin" ]]; then
   export PATH="$HOME/.anyenv/bin:$PATH"
+fi
+if [[ -d "$HOME/.deno/bin" ]]; then
+  export PATH="$HOME/.deno/bin:$PATH"
 fi
 if [[ -d "/mnt/c/Users/mura/AppData/Local/Programs/Microsoft VS Code/bin" ]]; then
   export PATH="/mnt/c/Users/mura/AppData/Local/Programs/Microsoft VS Code/bin:$PATH"
