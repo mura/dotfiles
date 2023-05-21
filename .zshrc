@@ -66,18 +66,14 @@ fi
 if [[ -d "/mnt/c/Users/mura/AppData/Local/Programs/Microsoft VS Code/bin" ]]; then
   export PATH="/mnt/c/Users/mura/AppData/Local/Programs/Microsoft VS Code/bin:$PATH"
 fi
-if [[ -d ~/.deno ]]; then
-  export DENO_INSTALL=~/.deno
-  export PATH="$DENO_INSTALL/bin:$PATH"
-fi
 
 typeset -gU PATH
 
 ###
 # asdf
 ###
-if [[ -f ~/.asdf/asdf.sh ]]; then
-  . ~/.asdf/asdf.sh
+if [[ -f "$HOME/.asdf/asdf.sh" ]]; then
+  . "$HOME/.asdf/asdf.sh"
 fi
 
 ###
