@@ -2,4 +2,5 @@ share/karabiner/
 share/nvim/
 share/ruby-advisory-db/
 share/venv/
+share/virtualenv/
 state/
