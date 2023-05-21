@@ -66,8 +66,19 @@ fi
 if [[ -d "/mnt/c/Users/mura/AppData/Local/Programs/Microsoft VS Code/bin" ]]; then
   export PATH="/mnt/c/Users/mura/AppData/Local/Programs/Microsoft VS Code/bin:$PATH"
 fi
+if [[ -d ~/.deno ]]; then
+  export DENO_INSTALL=~/.deno
+  export PATH="$DENO_INSTALL/bin:$PATH"
+fi
 
 typeset -gU PATH
+
+###
+# asdf
+###
+if [[ -f ~/.asdf/asdf.sh ]]; then
+  . ~/.asdf/asdf.sh
+fi
 
 ###
 # zplug
@@ -127,6 +138,9 @@ unset -f enable-powerlevel10k
 autoload -Uz enable-completions
 if enable-completions; then
   zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+  if [[ -n "$ASDF_DIR" ]]; then
+    fpath=(${ASDF_DIR}/completions $fpath)
+  fi
   autoload -Uz compinit; compinit
 fi
 unset -f enable-completions
