@@ -211,10 +211,6 @@ fi
 # 便利関数
 ###
 update () {
-  if [[ -n "$(command -v apt-get)" ]]; then
-    sudo apt-get update
-    sudo apt-get upgrade -y --autoremove
-  fi
   if [[ -n "$(command -v brew)" ]]; then
     brew upgrade
     brew bundle dump -f
