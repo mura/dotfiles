@@ -37,8 +37,6 @@ setopt null_glob            # グロブがマッチしないときエラーに�
 #setopt ignore_eof           # Ctrl-D でログアウトするのを抑制する。
 #setopt xtrace               # デバッグ用 コマンドラインがどのように展開されたか表示
 
-fpath=(~/.local/share/zsh/functions $fpath)
-
 ###
 # Homebrew
 ###
@@ -52,6 +50,15 @@ elif [[ -x /bin/bash && -d "/home/linuxbrew/.linuxbrew" ]]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
   export HOMEBREW_BUNDLE_FILE=~/.config/brewfile/Brewfile.linux
 fi
+
+###
+# fpath
+###
+if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]]; then
+  fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
+fi
+
+fpath=(~/.local/share/zsh/functions $fpath)
 
 ###
 # PATH
