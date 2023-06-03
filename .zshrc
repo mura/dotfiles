@@ -77,13 +77,6 @@ fi
 typeset -gU PATH
 
 ###
-# asdf
-###
-if [[ -f "$HOME/.asdf/asdf.sh" ]]; then
-  . "$HOME/.asdf/asdf.sh"
-fi
-
-###
 # zplug
 ###
 if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/opt/zplug" ]]; then
@@ -173,6 +166,8 @@ fi
 ###
 if [[ -n "$HOMEBREW_PREFIX" && -f "$HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh" ]]; then
   . "$HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh"
+elif [[ -f "$HOME/.asdf/asdf.sh" ]]; then
+  . "$HOME/.asdf/asdf.sh"
 fi
 
 # Google Cloud SDK
