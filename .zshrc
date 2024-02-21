@@ -70,6 +70,9 @@ fi
 if [[ -d "$HOME/.deno/bin" ]]; then
   export PATH="$HOME/.deno/bin:$PATH"
 fi
+if [[ -d "$HOME/.docker/bin" ]]; then
+  export PATH="$HOME/.docker/bin:$PATH"
+fi
 if [[ -d "/mnt/c/Users/mura/AppData/Local/Programs/Microsoft VS Code/bin" ]]; then
   export PATH="/mnt/c/Users/mura/AppData/Local/Programs/Microsoft VS Code/bin:$PATH"
 fi
