@@ -173,6 +173,14 @@ elif [[ -f "$HOME/.asdf/asdf.sh" ]]; then
   . "$HOME/.asdf/asdf.sh"
 fi
 
+###
+# fzf
+###
+if [[ -n "$(command -v fzf)" ]]; then
+  eval "$(fzf --zsh)"
+  export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
+fi
+
 # Google Cloud SDK
 if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk" ]]; then
   source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
