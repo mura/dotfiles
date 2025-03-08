@@ -73,6 +73,9 @@ fi
 if [[ -d "$HOME/.docker/bin" ]]; then
   export PATH="$HOME/.docker/bin:$PATH"
 fi
+if [[ -n "$(command -v asdf)" ]]; then
+  export PATH="$HOME/.asdf/shims:$PATH"
+fi
 if [[ -d "/mnt/c/Users/mura/AppData/Local/Programs/Microsoft VS Code/bin" ]]; then
   export PATH="/mnt/c/Users/mura/AppData/Local/Programs/Microsoft VS Code/bin:$PATH"
 fi
@@ -137,9 +140,6 @@ unset -f enable-powerlevel10k
 autoload -Uz enable-completions
 if enable-completions; then
   zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-  if [[ -n "$ASDF_DIR" ]]; then
-    fpath=(${ASDF_DIR}/completions $fpath)
-  fi
   autoload -Uz compinit; compinit
 fi
 unset -f enable-completions
@@ -165,20 +165,18 @@ if [[ -n "$(command -v pyenv)" && -d "$(pyenv root)/plugins/pyenv-virtualenv" ]]
 fi
 
 ###
-# asdf
-###
-if [[ -n "$HOMEBREW_PREFIX" && -f "$HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh" ]]; then
-  . "$HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh"
-elif [[ -f "$HOME/.asdf/asdf.sh" ]]; then
-  . "$HOME/.asdf/asdf.sh"
-fi
-
-###
 # fzf
 ###
 if [[ -n "$(command -v fzf)" ]]; then
   eval "$(fzf --zsh)"
   export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
+fi
+
+###
+# uv
+###
+if [[ -n "$(command) -v uv" ]]; then
+  eval "$(uv generate-shell-completion zsh)"
 fi
 
 # Google Cloud SDK
