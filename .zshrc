@@ -106,11 +106,8 @@ fi
 ###
 # zsh plugins
 ###
-autoload -Uz powerlevel10k-path plugin-path
+autoload -Uz plugin-path
 if [[ -n "$(command -v zplug)" ]]; then
-  if [[ -z "$(powerlevel10k-path)" ]]; then
-    zplug 'romkatv/powerlevel10k', as:theme, depth:1
-  fi
   if [[ -z "$(plugin-path zsh-completions)" ]]; then
     zplug 'zsh-users/zsh-completions'
   fi
@@ -129,14 +126,6 @@ fi
 ###
 # plugin setting
 ###
-autoload -Uz enable-powerlevel10k
-if ! enable-powerlevel10k; then
-  autoload -U colors; colors
-  PROMPT="%{$fg[cyan]%}%n@%m%{$reset_color%}%(!.#.$) "
-  RPROMPT="%{$fg[magenta]%}[ %~ ]%{$reset_color%}"
-fi
-unset -f enable-powerlevel10k
-
 autoload -Uz enable-completions
 if enable-completions; then
   zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
@@ -233,3 +222,14 @@ update () {
     nvim --headless -c "call dein#update()" -c 'q'
   fi
 }
+
+###
+# Prompt
+###
+if [[ -n "$(command -v starship)" ]]; then
+  eval "$(starship init zsh)"
+else
+  autoload -U colors; colors
+  PROMPT="%{$fg[cyan]%}%n@%m%{$reset_color%}%(!.#.$) "
+  RPROMPT="%{$fg[magenta]%}[ %~ ]%{$reset_color%}"
+fi

@@ -1,5 +1,0 @@
-emulate -L zsh
-
-if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/share/powerlevel10k" ]]; then
-  echo "$HOMEBREW_PREFIX/share/powerlevel10k"
-fi
