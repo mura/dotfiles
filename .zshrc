@@ -164,7 +164,7 @@ fi
 ###
 # uv
 ###
-if [[ -n "$(command) -v uv" ]]; then
+if [[ -n "$(command -v uv)" ]]; then
   eval "$(uv generate-shell-completion zsh)"
 fi
 
