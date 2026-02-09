@@ -1,0 +1,8 @@
+font-family = UDEV Ghothic
+font-size = 14
+font-feature = -dlig
+
+theme = Dark Modern
+background-opacity = 0.9
+
+env = LANG=ja_JP.UTF-8

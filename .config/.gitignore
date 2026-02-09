@@ -1,0 +1,10 @@
+anyenv/
+configstore/
+fontforge/
+gcloud/
+github-copilot/
+iterm2/
+karabiner/automatic_backups/
+nvim/.netrwhist
+rclone/
+secrets
