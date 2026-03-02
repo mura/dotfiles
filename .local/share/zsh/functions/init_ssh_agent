@@ -1,0 +1,54 @@
+# SSH Agent の初期化
+# 1Password > WSL (npiperelay) > 通常のssh-agent の優先順位で設定
+emulate -L zsh
+
+# 1Password SSH Agent (macOS/Linux)
+if [[ "$OSTYPE" == darwin* ]]; then
+  # macOS
+  local onepassword_sock="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+  if [[ -S "$onepassword_sock" ]]; then
+    export SSH_AUTH_SOCK="$onepassword_sock"
+    return 0
+  fi
+elif [[ -S "$HOME/.1password/agent.sock" ]]; then
+  # Linux
+  export SSH_AUTH_SOCK="$HOME/.1password/agent.sock"
+  return 0
+fi
+
+# WSL: npiperelay.exe を使ってWindowsのSSH Agentに接続
+if [[ -n "$(command -v npiperelay.exe)" ]]; then
+  # Code extracted from https://stuartleeks.com/posts/wsl-ssh-key-forward-to-windows/
+  export SSH_AUTH_SOCK=$HOME/.1password/agent.sock
+  
+  # need `ps -ww` to get non-truncated command for matching
+  # use square brackets to generate a regex match for the process we want but that doesn't match the grep command running it!
+  ALREADY_RUNNING=$(ps -auxww | grep -q "[n]piperelay.exe -ei -s //./pipe/openssh-ssh-agent"; echo $?)
+  if [[ $ALREADY_RUNNING != "0" ]]; then
+    if [[ -S $SSH_AUTH_SOCK ]]; then
+      # not expecting the socket to exist as the forwarding command isn't running
+      echo "removing previous socket..."
+      rm $SSH_AUTH_SOCK
+    fi
+    echo "Starting SSH-Agent relay..."
+    # setsid to force new session to keep running
+    # set socat to listen on $SSH_AUTH_SOCK and forward to npiperelay which then forwards to openssh-ssh-agent on windows
+    (setsid socat UNIX-LISTEN:$SSH_AUTH_SOCK,fork EXEC:"npiperelay.exe -ei -s //./pipe/openssh-ssh-agent",nofork &) >/dev/null 2>&1
+  fi
+  return 0
+fi
+
+# 通常のssh-agent（既存のエージェントを探すか、新規起動）
+if [[ -z "$SSH_AUTH_SOCK" ]] || [[ ! -S "$SSH_AUTH_SOCK" ]]; then
+  local ssh_agent_env="$HOME/.ssh/agent-env"
+  if [[ -f "$ssh_agent_env" ]]; then
+    source "$ssh_agent_env" > /dev/null
+  fi
+  
+  # エージェントが動いているか確認
+  if ! ssh-add -l >/dev/null 2>&1; then
+    # 動いていない場合は新規起動
+    ssh-agent -s > "$ssh_agent_env"
+    source "$ssh_agent_env" > /dev/null
+  fi
+fi

@@ -1,0 +1,22 @@
+# pathの設定
+emulate -L zsh
+
+if [[ -d "/mnt/c/Users/mura/AppData/Local/Programs/Microsoft VS Code/bin" ]]; then
+  path=("/mnt/c/Users/mura/AppData/Local/Programs/Microsoft VS Code/bin" $path)
+fi
+if [[ -n "$(command -v asdf)" ]]; then
+  path=("$HOME/.asdf/shims" $path)
+fi
+if [[ -d "$HOME/.docker/bin" ]]; then
+  path=("$HOME/.docker/bin" $path)
+fi
+if [[ -d "$HOME/.deno/bin" ]]; then
+  path=("$HOME/.deno/bin" $path)
+fi
+if [[ -d "$HOME/.anyenv/bin" ]]; then
+  path=("$HOME/.anyenv/bin" $path)
+fi
+if [[ -d "$HOME/.antigravity/antigravity/bin" ]]; then
+  path=("$HOME/.antigravity/antigravity/bin" $path)
+fi
+path=("$HOME/.local/bin" $path)

@@ -1,0 +1,20 @@
+# zplugの初期化
+emulate -L zsh
+
+if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/opt/zplug" ]]; then
+  # Homebrew
+  export ZPLUG_HOME="$HOMEBREW_PREFIX/opt/zplug"
+  source $ZPLUG_HOME/init.zsh
+elif [[ -d "/usr/share/zplug" ]]; then
+  # Ubuntu
+  export ZPLUG_HOME=~/.zplug
+  source /usr/share/zplug/init.zsh
+elif [[ -d "/usr/share/zsh/scripts/zplug" ]]; then
+  # Arch
+  export ZPLUG_HOME=~/.zplug
+  source /usr/share/zsh/scripts/zplug/init.zsh
+elif [[ -f ~/.zplug/init.zsh ]]; then
+  # Manual
+  export ZPLUG_HOME=~/.zplug
+  source $ZPLUG_HOME/init.zsh
+fi

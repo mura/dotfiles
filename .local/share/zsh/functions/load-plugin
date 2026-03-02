@@ -1,0 +1,44 @@
+emulate -L zsh
+
+# Usage: load-plugin <plugin-name> [<zplug-spec>]
+# Example:
+#   load-plugin zsh-completions       # Homebrew or zplug: zsh-users/zsh-completions
+#   load-plugin zsh-syntax-highlighting
+#   load-plugin zsh-history-substring-search
+
+local name=$1
+local zplug_spec=${2:-"zsh-users/$name"}
+
+# Homebrewまたはシステムパッケージからプラグインを探す
+if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/share/$name" ]]; then
+  # Homebrew経由でインストールされている
+  if [[ "$name" == "zsh-completions" ]]; then
+    fpath=("$HOMEBREW_PREFIX/share/$name" $fpath)
+    return 0
+  elif [[ -f "$HOMEBREW_PREFIX/share/$name/$name.zsh" ]]; then
+    source "$HOMEBREW_PREFIX/share/$name/$name.zsh"
+    return 0
+  fi
+elif [[ -d "/usr/share/$name" ]]; then
+  # システムパッケージとしてインストールされている
+  if [[ "$name" == "zsh-completions" ]]; then
+    fpath=("/usr/share/$name" $fpath)
+    return 0
+  elif [[ -f "/usr/share/$name/$name.zsh" ]]; then
+    source "/usr/share/$name/$name.zsh"
+    return 0
+  fi
+fi
+
+# zplugが利用可能な場合はzplug経由でロード
+if [[ -n "$(command -v zplug)" ]]; then
+  # まだインストールされていない場合は登録
+  if ! zplug check "$zplug_spec" 2>/dev/null; then
+    zplug "$zplug_spec"
+    typeset -g needs_zplug_install=1
+  fi
+  return 0
+fi
+
+# どこにも見つからない
+return 1
