@@ -1,4 +1,6 @@
+share/CMakeTools/
 share/karabiner/
+share/mise/
 share/nvim/
 share/ruby-advisory-db/
 share/venv/

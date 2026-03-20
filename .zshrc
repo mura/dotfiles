@@ -101,12 +101,9 @@ fi
 # Shell integrations
 #######################################
 
-# anyenv
-if [[ -n "$(command -v anyenv)" ]]; then
-  eval "$(anyenv init -)"
-fi
-if [[ -n "$(command -v pyenv)" && -d "$(pyenv root)/plugins/pyenv-virtualenv" ]]; then
-  eval "$(pyenv virtualenv-init -)"
+# mise
+if [[ -n "$(command -v mise)" ]]; then
+  eval "$(mise activate zsh)"
 fi
 
 # fzf
@@ -153,8 +150,9 @@ update () {
     brew upgrade
     brew bundle dump -f
   fi
-  if [[ -n "$(command -v anyenv)" ]]; then
-    anyenv update
+  if [[ -n "$(command -v mise)" ]]; then
+    mise self-update
+    mise upgrade
   fi
   if [[ -n "$(command -v nvim)" ]]; then
     nvim --headless -c "call dein#update()" -c 'q'
