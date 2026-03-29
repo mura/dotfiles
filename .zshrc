@@ -150,10 +150,6 @@ update () {
     brew upgrade
     brew bundle dump -f
   fi
-  if [[ -n "$(command -v mise)" ]]; then
-    mise self-update
-    mise upgrade
-  fi
   if [[ -n "$(command -v nvim)" ]]; then
     nvim --headless -c "call dein#update()" -c 'q'
   fi

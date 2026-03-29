@@ -4,9 +4,6 @@ emulate -L zsh
 if [[ -d "/mnt/c/Users/mura/AppData/Local/Programs/Microsoft VS Code/bin" ]]; then
   path=("/mnt/c/Users/mura/AppData/Local/Programs/Microsoft VS Code/bin" $path)
 fi
-if [[ -n "$(command -v asdf)" ]]; then
-  path=("$HOME/.asdf/shims" $path)
-fi
 if [[ -d "$HOME/.docker/bin" ]]; then
   path=("$HOME/.docker/bin" $path)
 fi
