@@ -34,9 +34,9 @@ fi
 if [[ -n "$(command -v zplug)" ]]; then
   # まだインストールされていない場合は登録
   if ! zplug check "$zplug_spec" 2>/dev/null; then
-    zplug "$zplug_spec"
     typeset -g needs_zplug_install=1
   fi
+  zplug "$zplug_spec"
   return 0
 fi
 
