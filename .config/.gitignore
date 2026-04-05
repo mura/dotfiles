@@ -2,6 +2,7 @@ anyenv/
 configstore/
 fontforge/
 gcloud/
+gh/hosts.yml
 github-copilot/
 iterm2/
 karabiner/automatic_backups/
