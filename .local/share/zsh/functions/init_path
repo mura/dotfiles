@@ -1,8 +1,13 @@
 # pathの設定
 emulate -L zsh
 
-if [[ -d "/mnt/c/Users/mura/AppData/Local/Programs/Microsoft VS Code/bin" ]]; then
-  path=("/mnt/c/Users/mura/AppData/Local/Programs/Microsoft VS Code/bin" $path)
+if [[ -n "$WSL_DISTRO_NAME" ]]; then
+  if [[ -d "/mnt/c/Users/mura/AppData/Local/Programs/Microsoft VS Code/bin" ]]; then
+    path=("/mnt/c/Users/mura/AppData/Local/Programs/Microsoft VS Code/bin" $path)
+  fi
+  if [[ -d "/mnt/c/Users/mura/AppData/Local/Programs/Antigravity/bin" ]]; then
+    path=("/mnt/c/Users/mura/AppData/Local/Programs/Antigravity/bin" $path)
+  fi
 fi
 if [[ -d "$HOME/.docker/bin" ]]; then
   path=("$HOME/.docker/bin" $path)
