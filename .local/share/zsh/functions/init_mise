@@ -1,0 +1,34 @@
+# miseの設定
+emulate -L zsh
+
+_set_mise_env() {
+  local os=""
+  local distro=""
+
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    os="macos"
+  elif [[ "$(uname -s)" == "Linux" ]]; then
+    if [[ -r /etc/os-release ]]; then
+      . /etc/os-release
+      distro="$ID"
+      case "$distro" in
+        ubuntu) os="ubuntu" ;;
+        debian) os="debian" ;;
+             *) os="linux" ;;
+      esac
+    else
+      os="linux"
+    fi
+  else
+    os="unknown"
+  fi
+
+  export MISE_ENV="$os"
+}
+
+_set_mise_env
+
+if [[ -n "$(command -v mise)" ]]; then
+  eval "$(mise activate zsh)"
+  eval "$(mise completion zsh)"
+fi

@@ -102,9 +102,7 @@ fi
 #######################################
 
 # mise
-if [[ -n "$(command -v mise)" ]]; then
-  eval "$(mise activate zsh)"
-fi
+autoload -Uz init_mise; init_mise
 
 # fzf
 if [[ -n "$(command -v fzf)" ]]; then
