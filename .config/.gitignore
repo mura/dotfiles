@@ -1,9 +1,11 @@
+
 anyenv/
 configstore/
 fontforge/
 gcloud/
 gh/hosts.yml
 github-copilot/
+htop/htoprc
 iterm2/
 karabiner/automatic_backups/
 nvim/.netrwhist
